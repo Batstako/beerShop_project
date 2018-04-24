@@ -29,6 +29,21 @@ $user = $stmt->fetch();
 
 $error = "";
 
+if (isset($_POST['submit_info'])) {
+    $query = "UPDATE users
+              SET info=:infoAboutMe
+              WHERE username = '$username'";
+
+    $stmt = $pdo->prepare($query);
+    
+    $infoAboutMe = $_POST['infoAboutMe'];
+
+    $stmt->bindParam(':infoAboutMe', $infoAboutMe);
+    $stmt->execute([$infoAboutMe]);
+    header("Location: profile.php");
+    exit;
+}
+
 if (isset($_POST['submit'])) {
     $query = "UPDATE users
             SET picture=:picture
@@ -199,7 +214,8 @@ if (isset($_POST['submit'])) {
         <div>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"
                   enctype="multipart/form-data">
-                <div class="row justify-content-md-center mb-1"><div class="col-md-auto">
+                <div class="row justify-content-md-center mb-1">
+                    <div class="col-md-auto">
                         <input class="inputfile inputfile-1" type="file" name="picture" id="image"  data-multiple-caption="{count} files selected" multiple />
                         <label for="image"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg><span>Choose a file&hellip;</span></label>
                     </div>
@@ -219,19 +235,23 @@ if (isset($_POST['submit'])) {
                         <p class="col-lg-6 text-center px-2"> Age: <?= $user['age'] ?></p>
                     </div>
                     <div class="row justify-content-md-center">
-                        <p class="col-lg-6 text-center px-2"> About me: <?= $user['info'] ?></p>
+                        <div class="col-lg-6 text-center px-2"> About me: </div>
                     </div>
+                    <div class="row justify-content-md-center" style="overflow: auto; text-align: justify;"> <?= $user['info'] ?> </div>
                 </div>
 
+            <form action="#" method="post">
+                
             <div class="well well-lg shadow_strokes_big">
                 <div class="form-group">
                     <label> Info about me </label>
-                    <textarea id="infoAboutMe" name="infoAboutMe" class="form-control shadow_strokes" rows="3" maxlength="200" style="resize: none; "></textarea>
+                    <textarea id="infoAboutMe" name="infoAboutMe" class="form-control shadow_strokes" rows="3" maxlength="500" style="resize: none; "></textarea>
                 </div>
 
                 <div>
-                    <button id="submitInfo" class="btn btn-warning" type="submit" name="saveChanges">Save Changes</button>
+                    <input id="submitInfo" class="btn btn-warning" type="submit" name="submit_info" value="Update">
                 </div>
+            </form>
 
                 <div>
                     <h3 class="welcome mt-5 font-weight-bold">My Favorite Beers</h3>
@@ -254,7 +274,7 @@ if (isset($_POST['submit'])) {
                             extract($row);
                             echo "<div class='polaroid rounded col-sm-3 mx-5 shadow_strokes'>";
                             echo "<div class='col-md py-4'>";
-                            echo "<img style='height: 150px;' src='beers/{$picture}'>";
+                            echo "<img style='width: 160px;' src='beers/{$picture}'>";
                             echo "<p> {$product_name} </p>";
                             echo "<p> You have ordered: {$order_qty}</p>";
                             echo "</div>";
