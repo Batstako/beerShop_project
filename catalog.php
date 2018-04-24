@@ -6,6 +6,52 @@ $records_per_page = 12;
 $from_record_num = ($records_per_page * $page) - $records_per_page;
 
 ?>
+
+
+<?php
+require_once 'connect.php';
+
+if (!isset($_SESSION['user'])) {
+    header('Location: login.php');
+    exit;
+}
+$username = $_SESSION['user'];
+$sql = "SELECT
+            wallet
+        FROM
+            users
+        WHERE
+             username = ?
+
+         ";
+
+$stmt = $pdo->prepare($sql);
+
+$stmt->execute([$username]);
+
+$user = $stmt->fetch();
+
+if (isset($_POST['deposit'])) {
+    $deposit = htmlspecialchars(strip_tags($_POST['money']));
+    $wallet = floatval($deposit) + floatval($user['wallet']);
+
+    $query = "UPDATE users 
+                    SET wallet=:wallet
+                    WHERE username=:username";
+
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':wallet', $wallet);
+    $stmt->bindParam(':username', $username);
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success'>Record was updated.</div>";
+    }
+
+    header("Location: wallet.php");
+}
+
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,8 +74,10 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
 <header class="fixed-top">
     <?php include_once "php_includes/header.php"; ?>
 </header>
+
 <div style=" padding-top: 100px;
   text-align: center;">
+  <div style="position:fixed; margin-left: 70%;"><h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> <img src="images/wallet_card.png" style="width: 10%;" /></div>
     <form name="sort" action="catalog.php" method="get">
         <select class="btn" name="order">
             <option>Order by:</option>
@@ -38,9 +86,10 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
             <option value="price">Price (Low > High)</option>
             <option value="priceDesc">Price (High > Low)</option>
         </select>
-        <input class="btn btn-danger" type="submit" value=" - Sort - "/>
+        <input class="btn btn-danger" type="submit" value=" - Sort - "/>        
     </form>
 </div>
+
 <div class='container' style="margin-bottom: 150px; text-align: center;">
 
     <?php
@@ -87,7 +136,7 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
             echo "<div class='product justify-content-md-center'>";
-            echo "<img class='beerPicture' src='beers/{$picture}' style='height:50%; '>";
+            echo "<img class='beerPicture' src='beers/{$picture}' style='height: 130px; width:130px'>";
             echo "<h2 class='header my-3 text-truncate'>{$name}</h2>";
             echo "<p class='description' style='display: none;'>{$description}</p>";
             echo "<p class='price'>{$price} lv.</p>";
