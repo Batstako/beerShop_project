@@ -111,7 +111,7 @@ if (isset($_POST['deposit'])) {
      echo  "<div class='alert alert-danger'> You don't have enough funds in your account to make this order! </div>";
  } ?>
     <?php if ($error_quantity != '') {
-        $Url = $_GET['err'];
+        $Url = $_GET['info'];
         $UrlQuantity = $_GET['quantity'];
         $UrlId = $_GET['id'];
 
