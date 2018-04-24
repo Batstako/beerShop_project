@@ -25,6 +25,50 @@ else{
     exit;
 }
 ?>
+
+<?php
+require_once 'connect.php';
+
+if (!isset($_SESSION['user'])) {
+    header('Location: login.php');
+    exit;
+}
+$username = $_SESSION['user'];
+$sql = "SELECT
+            wallet
+        FROM
+            users
+        WHERE
+             username = ?
+
+         ";
+
+$stmt = $pdo->prepare($sql);
+
+$stmt->execute([$username]);
+
+$user = $stmt->fetch();
+
+if (isset($_POST['deposit'])) {
+    $deposit = htmlspecialchars(strip_tags($_POST['money']));
+    $wallet = floatval($deposit) + floatval($user['wallet']);
+
+    $query = "UPDATE users 
+                    SET wallet=:wallet
+                    WHERE username=:username";
+
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':wallet', $wallet);
+    $stmt->bindParam(':username', $username);
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success'>Record was updated.</div>";
+    }
+
+    header("Location: wallet.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,8 +104,10 @@ else{
 <header>
     <?php include_once "php_includes/header.php"; ?>
 </header>
-<div class="container" style="margin-top:100px; margin-bottom: 100px;">
+
+<div class="container" style="margin-top:50px; margin-bottom: 100px;">
     <h1>Basket</h1>
+    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img src="images/wallet_card.png" style="width: 20%;" /></div>
     <table class="table">
         <thead>
         <tr>
@@ -80,10 +126,10 @@ else{
             foreach($cartItems as $item){
                 ?>
                 <tr>
-                    <td><?php echo $item["name"]; ?></td>
-                    <td><?php echo '$'.$item["price"].' lv'; ?></td>
+                    <td style="vertical-align: middle;"><?php echo $item["name"]; ?></td>
+                    <td style="vertical-align: middle;"><?php echo $item["price"].' lv'; ?></td>
                     <td><input type="number" class="form-control text-center" value="<?php echo $item["qty"]; ?>" onchange="updateCartItem(this, '<?php echo $item["rowid"]; ?>')"></td>
-                    <td><?php echo '$'.$item["subtotal"].' lv'; ?></td>
+                    <td style="vertical-align: middle;"><?php echo $item["subtotal"].' lv'; ?></td>
                     <td>
                         <a href="cartAction.php?action=removeCartItem&id=<?php echo $item["rowid"]; ?>" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="glyphicon glyphicon-trash"></i></a>
                     </td>

@@ -36,6 +36,50 @@ $error_quantity = isset($_GET['info']) ? $_GET['info'] : '';
 
 
 ?>
+
+<?php
+require_once 'connect.php';
+
+if (!isset($_SESSION['user'])) {
+    header('Location: login.php');
+    exit;
+}
+$username = $_SESSION['user'];
+$sql = "SELECT
+            wallet
+        FROM
+            users
+        WHERE
+             username = ?
+
+         ";
+
+$stmt = $pdo->prepare($sql);
+
+$stmt->execute([$username]);
+
+$user = $stmt->fetch();
+
+if (isset($_POST['deposit'])) {
+    $deposit = htmlspecialchars(strip_tags($_POST['money']));
+    $wallet = floatval($deposit) + floatval($user['wallet']);
+
+    $query = "UPDATE users 
+                    SET wallet=:wallet
+                    WHERE username=:username";
+
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':wallet', $wallet);
+    $stmt->bindParam(':username', $username);
+    if ($stmt->execute()) {
+        echo "<div class='alert alert-success'>Record was updated.</div>";
+    }
+
+    header("Location: wallet.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,6 +123,7 @@ $error_quantity = isset($_GET['info']) ? $_GET['info'] : '';
         echo  "<div class='alert alert-danger'> We don't have {$UrlQuantity} of {$Url}. We currently have {$beerRow['quantity']} in stock. </div>";
     } ?>
     <h1>Order Preview</h1>
+    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img src="images/wallet_card.png" style="width: 20%;" /></div>
     <table class="table">
         <thead>
         <tr>
@@ -97,9 +142,9 @@ $error_quantity = isset($_GET['info']) ? $_GET['info'] : '';
                 ?>
                 <tr>
                     <td><?php echo $item["name"]; ?></td>
-                    <td><?php echo '$'.$item["price"].' lv'; ?></td>
+                    <td><?php echo $item["price"].' lv'; ?></td>
                     <td><?php echo $item["qty"]; ?></td>
-                    <td><?php echo '$'.$item["subtotal"].' lv'; ?></td>
+                    <td><?php echo $item["subtotal"].' lv'; ?></td>
                 </tr>
             <?php } }else{ ?>
         <tr><td colspan="4"><p>No items in your cart......</p></td>
@@ -109,7 +154,7 @@ $error_quantity = isset($_GET['info']) ? $_GET['info'] : '';
         <tr>
             <td colspan="3"></td>
             <?php if($cart->total_items() > 0){ ?>
-                <td class="text-center"><strong>Total <?php echo '$'.$cart->total().' lv'; ?></strong></td>
+                <td class="text-center"><strong>Total <?php echo $cart->total().' lv'; ?></strong></td>
             <?php } ?>
         </tr>
         </tfoot>
@@ -126,9 +171,8 @@ $error_quantity = isset($_GET['info']) ? $_GET['info'] : '';
         <a href="cartAction.php?action=placeOrder" class="btn btn-success orderBtn">Place Order <i class="glyphicon glyphicon-menu-right"></i></a>
         <a href="viewCart.php" class="btn btn-warning">Back to cart</a>
     </div>
-
-
 </div>
+
 <footer class="footer navbar-fixed-bottom">
     <?php include_once "php_includes/footer.php"; ?>
 </footer>

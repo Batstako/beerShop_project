@@ -75,8 +75,8 @@ if (isset($_POST['deposit'])) {
     <?php include_once "php_includes/header.php"; ?>
 </header>
 
-<div id="main_container" class='container' style="margin: 180px auto 150px; text-align: center;">
-  <div style="position:fixed; margin-left: 70%;"><h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> <img src="images/wallet_card.png" style="width: 10%;" /></div>
+<div id="main_container" class='container' style="margin: 150px auto; text-align: center;">
+  <div style="position:fixed; margin-left: 50%;"><h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> <img src="images/wallet_card.png" style="width: 10%;" /></div>
     <form name="sort" action="catalog.php" method="get">
         <select class="btn" name="order">
             <option>Order by:</option>
