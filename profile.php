@@ -245,11 +245,11 @@ if (isset($_POST['submit'])) {
             <div class="well well-lg shadow_strokes_big">
                 <div class="form-group">
                     <label> Info about me </label>
-                    <textarea id="infoAboutMe" name="infoAboutMe" class="form-control shadow_strokes" rows="3" maxlength="500" style="resize: none; "></textarea>
+                    <textarea id="infoAboutMe" name="infoAboutMe" class="form-control shadow_strokes" rows="3" maxlength="500" style="resize: none; text-align: center"></textarea>
                 </div>
 
                 <div>
-                    <input id="submitInfo" class="btn btn-warning" type="submit" name="submit_info" value="Update">
+                    <input id="submitInfo" class="btn btn-warning" type="submit" name="submit_info" value="Save info">
                 </div>
             </form>
 
