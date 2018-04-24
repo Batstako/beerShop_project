@@ -2,7 +2,7 @@
 
 require_once 'cart.php';
 $cart = new Cart;
-if (isset($_SESSION['id'])) {
+if (isset($_SESSION['id']) || isset($_COOKIE['remember_me'])) {
     $username = $_SESSION['user'];
 
     $sql = "SELECT

@@ -62,7 +62,7 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
                 $orderedRow = $orderedItemStmt->fetch(PDO::FETCH_ASSOC);
                 if($orderedRow['quantity'] < $orderItem['qty'])
                 {
-                    header ("Location: checkout.php?err={$orderItem['name']}&quantity={$orderItem['qty']}&id={$orderItem['id']}");
+                    header ("Location: checkout.php?info={$orderItem['name']}&quantity={$orderItem['qty']}&id={$orderItem['id']}");
                     exit;
                 }
             }

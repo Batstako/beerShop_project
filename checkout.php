@@ -32,7 +32,7 @@ $errors = array (
 );
 
 $error_id = isset($_GET['err']) ? (int)$_GET['err'] : 0;
-$error_quantity = isset($_GET['err']) ? $_GET['err'] : '';
+$error_quantity = isset($_GET['info']) ? $_GET['info'] : '';
 
 
 ?>
@@ -122,9 +122,12 @@ $error_quantity = isset($_GET['err']) ? $_GET['err'] : '';
         <p>Address: <?php echo $row['address']; ?></p>
     </div>
     <div class="footBtn">
-        <a href="index.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Continue Shopping</a>
+        <a href="catalog.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Continue Shopping</a>
         <a href="cartAction.php?action=placeOrder" class="btn btn-success orderBtn">Place Order <i class="glyphicon glyphicon-menu-right"></i></a>
+        <a href="viewCart.php" class="btn btn-warning">Back to cart</a>
     </div>
+
+
 </div>
 <footer class="footer navbar-fixed-bottom">
     <?php include_once "php_includes/footer.php"; ?>

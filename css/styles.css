@@ -399,4 +399,6 @@ input #avatar{
 .inputfile-1.has-focus + label,
 .inputfile-1 + label:hover {
     background-color: #722040;
+}#container_search{
+    margin: 180px auto 150px;
 }

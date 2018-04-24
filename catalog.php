@@ -75,8 +75,7 @@ if (isset($_POST['deposit'])) {
     <?php include_once "php_includes/header.php"; ?>
 </header>
 
-<div style=" padding-top: 100px;
-  text-align: center;">
+<div id="main_container" class='container' style="margin: 180px auto 150px; text-align: center;">
   <div style="position:fixed; margin-left: 70%;"><h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> <img src="images/wallet_card.png" style="width: 10%;" /></div>
     <form name="sort" action="catalog.php" method="get">
         <select class="btn" name="order">
@@ -88,9 +87,6 @@ if (isset($_POST['deposit'])) {
         </select>
         <input class="btn btn-danger" type="submit" value=" - Sort - "/>        
     </form>
-</div>
-
-<div class='container' style="margin-bottom: 150px; text-align: center;">
 
     <?php
 
@@ -176,7 +172,7 @@ if (isset($_POST['deposit'])) {
     include_once "php_includes/paging.php";
     echo "</div>";
     ?>
-
+    <div class="container" id="container_search" style="display: none">container search </div>
 
     <footer class="fixed-bottom"
             style="font-family: 'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'">
@@ -188,8 +184,8 @@ if (isset($_POST['deposit'])) {
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
     <script src="js/catalog.js" type="text/javascript"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"
-            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="js/search.js" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
             $("#catalog").addClass('text_shadow');
@@ -209,6 +205,8 @@ if (isset($_POST['deposit'])) {
                 header.classList.remove("sticky");
             }
         }
+
+
     </script>
 
 </body>
