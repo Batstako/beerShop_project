@@ -167,8 +167,9 @@ if (isset($_POST['submit'])) {
           href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <link href="css/styles.css" rel="stylesheet">
 
-            <!-- remove this if you use Modernizr -->
+    <!-- remove this if you use Modernizr -->
     <script>(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);</script>
+
 </head>
 
 
