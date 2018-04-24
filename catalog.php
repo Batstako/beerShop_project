@@ -159,7 +159,6 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
             }
         }
 
-
     </script>
 
 </body>

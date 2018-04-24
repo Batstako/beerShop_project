@@ -229,31 +229,37 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <div>
-                    <button class="btn btn-warning" type="submit" name="saveChanges">Save Changes</button>
+                    <button id="submitInfo" class="btn btn-warning" type="submit" name="saveChanges">Save Changes</button>
                 </div>
 
                 <div>
                     <h3 class="welcome mt-5 font-weight-bold">My Favorite Beers</h3>
                 </div>
                 <div class="row justify-content-md-center my-3 py-3">
-                    <div class="polaroid rounded col-sm-3 mx-5 shadow_strokes"  >
-                        <div class="col-md py-4">
-                            <img src="images/qh_beer.png">
-                            <p>Beer 1</p>
-                        </div>
-                    </div>
-                    <div class="polaroid rounded col-sm-3 mx-5 shadow_strokes" >
-                        <div class=" col-md py-4">
-                            <img src="images/qh_beer.png">
-                            <p>Beer 2</p>
-                        </div>
-                    </div>
-                    <div class=" polaroid rounded col-sm-3 mx-5 shadow_strokes" >
-                        <div class="col-md py-4">
-                            <img src="images/qh_beer.png">
-                            <p>Beer 3</p>
-                        </div>
-                    </div>
+                    <?php
+                        $beersSql = "SELECT b.user_id, a.username, b.product_name, b.product_id, b.product_description, b.order_qty, b.picture
+                                    FROM users a 
+                                    JOIN (SELECT username, u.id AS 'user_id', p.name AS 'product_name', p.description AS 'product_description', p.picture, p.id AS 'product_id', u.last_name, u.first_name, SUM(od.quantity) 
+                                    AS 'order_qty' FROM products p 
+                                    LEFT JOIN order_detail od ON p.id=od.product_id 
+                                    LEFT JOIN orders o ON od.order_id=o.id 
+                                    LEFT JOIN users u ON o.user_id=u.id WHERE product_id IS NOT NULL
+                                     GROUP BY u.username, p.id 
+                                     ORDER BY u.username, order_qty DESC) AS b ON a.id=b.user_id WHERE a.username = '$username' LIMIT 3";
+                        $beersStmt = $pdo->prepare($beersSql);
+                        $beersStmt->execute();
+
+                        while ($row = $beersStmt->fetch(PDO::FETCH_ASSOC)) {
+                            extract($row);
+                            echo "<div class='polaroid rounded col-sm-3 mx-5 shadow_strokes'>";
+                            echo "<div class='col-md py-4'>";
+                            echo "<img style='height: 150px;' src='beers/{$picture}'>";
+                            echo "<p> {$product_name} </p>";
+                            echo "<p> You have ordered: {$order_qty}</p>";
+                            echo "</div>";
+                            echo "</div>";
+                        }
+                    ?>
                 </div>                    
             </div>
 
@@ -276,9 +282,12 @@ if (isset($_POST['submit'])) {
     </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
     <script>
         $(document).ready(function () {
             $("#profile").addClass('text_shadow');
+
         });
     </script>    
     <script src="js/upload-avatar-button.js"></script>
