@@ -1,17 +1,16 @@
 <?php
 require_once __DIR__."/connect.php";
 
-//$_GET['txt'] = 'dog';
-//
-//var_dump($_GET['txt']);
-
 if(isset($_GET['txt'])){
 //    var_dump($_GET['txt']);
     $text = strip_tags(htmlspecialchars($_GET['txt']));
 
+ $text = strip_tags(htmlspecialchars($_GET['txt']));
+
     $getName = $pdo->prepare("SELECT * FROM products WHERE name LIKE concat('%', :name, '%') ");
 
     $getName->execute(array('name' => $text));
+
 
     while ($names = $getName->fetch(PDO:: FETCH_ASSOC)){
         extract($names);

@@ -159,7 +159,7 @@ else{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $total_rows = $row['total_rows'];
         // paginate records
-        $page_url="listAllBeers.php?";
+        $page_url = "listAllBeers.php?{$test}&";
         include_once "php_includes/paging.php";
 
             echo "</div>";
