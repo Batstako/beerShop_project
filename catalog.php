@@ -125,7 +125,7 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
     include_once "php_includes/paging.php";
     echo "</div>";
     ?>
-    <div class="container" id="container_search" style="display: none">container search </div>
+    <div class="container" id="container_search" style= "display: none; margin: 180px auto 150px; text-align: center;"></div>
 
     <footer class="fixed-bottom"
             style="font-family: 'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'">
@@ -136,8 +136,9 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
     </footer>
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
-    <script src="js/catalog.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+    <script src="js/catalog.js" type="text/javascript"></script>
     <script src="js/search.js" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
