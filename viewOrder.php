@@ -143,7 +143,7 @@ else{
     echo        "<option value='approved'>Approved</option>";
     echo        "<option value='completed'>Completed</option>";
     echo    "</select>";
-    echo    "<input class='btn btn-danger' type='submit' value='Change Status'/>";
+    echo    "<input class='btn btn-danger' type='submit' name='submit' value='Change Status'/>";
     echo    "</form>";
     echo "</div>";
     $changeQuery = $statusQuery;
@@ -158,6 +158,9 @@ else{
     }
     $changeStmt = $pdo->prepare($changeQuery);
     $changeStmt->execute();
+    if(isset($_POST['submit'])){
+        header("Refresh:0");
+    }
 
 //"UPDATE users SET loggedin = '1' where `id` = $userid ";
         ?>
