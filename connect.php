@@ -9,10 +9,10 @@ error_reporting(E_ALL);
 session_start();
 
 //Our MySQL user account.
-define('MYSQL_USER', 'qh-beer');
+define('MYSQL_USER', 'root');
 
 //Our MySQL password.
-define('MYSQL_PASSWORD', 'pass');
+define('MYSQL_PASSWORD', '');
 
 //The server that MySQL is located on.
 define('MYSQL_HOST', 'localhost');
