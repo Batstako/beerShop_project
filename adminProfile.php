@@ -61,7 +61,7 @@ else{
                     <div class="col-lg-3 text-center my-5">
                         <a href="orders.php">
                             <img class="img-fluid"  src="images/user_acc.png">
-                            <p class="text-center">USER ACCOUNTS</p>
+                            <p class="text-center">USER ORDERS</p>
                         </a>
                     </div>
             </div>
