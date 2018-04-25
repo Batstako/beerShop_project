@@ -11,10 +11,6 @@ $from_record_num = ($records_per_page * $page) - $records_per_page;
 <?php
 require_once 'connect.php';
 
-if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
-    exit;
-}
 $username = $_SESSION['user'];
 $sql = "SELECT
             wallet

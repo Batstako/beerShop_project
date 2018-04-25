@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once 'connect.php';
 if (isset($_SESSION['user']) && $_SESSION['user'] == 'admin') {
 
@@ -65,11 +66,13 @@ else{
         echo "</tr>";
         echo "</thead>";
         echo "<tbody>";
+        $orderPrice = 0;
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
             echo "<tr>";
             //            echo "<td>{$id}</td>";
             $totalPrice = $price * $quantity;
+            $orderPrice += $totalPrice;
             $totalPrice = number_format((float)$totalPrice, 2, '.', '');
             echo "<th class='align-middle'>{$name}</th>";
             echo "<td class='align-middle'>{$quantity}</td>";
@@ -84,6 +87,7 @@ else{
         echo "</tbody>";
 
         echo "</table>";
+        echo "<p style='float: right; '> Total order price: {$orderPrice}</p>";
         echo "</div>";
         echo "</div>";
     }
@@ -141,29 +145,30 @@ else{
     echo    "<select class='btn' name='status'>";
     echo        "<option>Status: {$row['status']}</option>";
     echo        "<option value='processing'>Processing</option>";
-    echo        "<option value='approved'>Approved</option>";
     echo        "<option value='completed'>Completed</option>";
     echo    "</select>";
     echo    "<input class='btn btn-danger' type='submit' name='submit' value='Change Status'/>";
     echo    "</form>";
     echo "</div>";
     $changeQuery = $statusQuery;
+
     if (isset($_POST['status']) && $orderStatus == 'processing') {
         $changeQuery = "UPDATE orders SET status = 'processing' where id = {$_GET['id']}";
     }
-    else if (isset($_POST['status']) && $orderStatus == 'approved') {
-        $changeQuery = "UPDATE orders SET status = 'approved' where id = {$_GET['id']}";
-    }
+
     else if (isset($_POST['status']) && $orderStatus == 'completed') {
         $changeQuery = "UPDATE orders SET status = 'completed' where id =  {$_GET['id']}";
     }
+
     $changeStmt = $pdo->prepare($changeQuery);
     $changeStmt->execute();
     if(isset($_POST['submit'])){
-        header("Refresh:0");
+        header("Location: viewOrder.php?id={$_GET['id']}");
     }
+    ob_end_flush();
 
-//"UPDATE users SET loggedin = '1' where `id` = $userid ";
+
+    //"UPDATE users SET loggedin = '1' where `id` = $userid ";
         ?>
 
 </div> <!-- end .container -->

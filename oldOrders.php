@@ -18,7 +18,7 @@ else{
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>All Orders</title>
+    <title>Completed Orders</title>
 
     <link rel="shortcut icon" href="images/logoNew_bubbles.png"/>
     <link type="text/css" rel="stylesheet" media="screen" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
@@ -37,7 +37,7 @@ else{
 <div class="container" style="margin-top: 100px;">
     <div class="row justify-content-md-center">
         <div class="page-header col-lg-10 text-center">
-            <h2>Orders</h2>
+            <h2>Completed Orders</h2>
         </div>
         <div style="text-align: center; margin-bottom: 25px;">
             <form name="sort" action="orders.php" method="get">
@@ -65,35 +65,35 @@ else{
 
     if (isset($_GET['order']) && $sortCriteria == 'priceDesc') {
         $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
-                  JOIN users u on u.id=o.user_id WHERE o.status = 'Processing' ORDER by total_price DESC LIMIT :from_record_num, :records_per_page";
+                  JOIN users u on u.id=o.user_id WHERE o.status = 'Completed' ORDER by total_price DESC LIMIT :from_record_num, :records_per_page";
     }
     else if (isset($_GET['order']) && $sortCriteria == 'price') {
         $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
-                  JOIN users u on u.id=o.user_id WHERE o.status = 'Processing' ORDER by total_price ASC LIMIT :from_record_num, :records_per_page";
+                  JOIN users u on u.id=o.user_id WHERE o.status = 'Completed' ORDER by total_price ASC LIMIT :from_record_num, :records_per_page";
     }
     else if (isset($_GET['order']) && $sortCriteria == 'name') {
         $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
-                  JOIN users u on u.id=o.user_id WHERE o.status = 'Processing' ORDER by u.username ASC LIMIT :from_record_num, :records_per_page";
+                  JOIN users u on u.id=o.user_id WHERE o.status = 'Completed' ORDER by u.username ASC LIMIT :from_record_num, :records_per_page";
     }
     else if (isset($_GET['order']) && $sortCriteria == 'nameDesc') {
         $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
-                  JOIN users u on u.id=o.user_id WHERE o.status = 'Processing' ORDER by u.username DESC LIMIT :from_record_num, :records_per_page";
+                  JOIN users u on u.id=o.user_id WHERE o.status = 'Completed' ORDER by u.username DESC LIMIT :from_record_num, :records_per_page";
     }
     else {
         $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
-                  JOIN users u on u.id=o.user_id WHERE o.status = 'Processing' ORDER by order_id DESC LIMIT :from_record_num, :records_per_page";
+                  JOIN users u on u.id=o.user_id WHERE o.status = 'Completed' ORDER by order_id DESC LIMIT :from_record_num, :records_per_page";
     }
+    echo "    
+           <div class='row'>
+                <div class='col-lg-1'></div>
+                <a href='orders.php' class='btn btn-primary mb-3 ml-4'>Back to orders</a>
+          </div>";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":from_record_num", $from_record_num, PDO::PARAM_INT);
     $stmt->bindParam(":records_per_page", $records_per_page, PDO::PARAM_INT);
     $stmt->execute();
     $num = $stmt->rowCount();
-    echo "    
-           <div class='row'>
-                <div class='col-lg-1'></div>
-                <a href='oldOrders.php' class='btn btn-primary mb-3 ml-4'>Completed Orders</a>
-          </div>";
 
     if($num>0){
         echo "<div class='row justify-content-md-center'>";
@@ -142,7 +142,7 @@ else{
         echo "</table>";
         // PAGINATION
         // count total number of rows
-        $query = "SELECT COUNT(*) as total_rows FROM orders";
+        $query = "SELECT COUNT(*) as total_rows FROM orders WHERE status = 'Completed'";
         $stmt = $pdo->prepare($query);
         // execute query
         $stmt->execute();
@@ -150,7 +150,7 @@ else{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $total_rows = $row['total_rows'];
         // paginate records
-        $page_url = "orders.php?{$test}&";
+        $page_url = "oldOrders.php?{$test}&";
         include_once "php_includes/paging.php";
 
         echo "</div>";

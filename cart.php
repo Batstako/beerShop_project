@@ -159,10 +159,10 @@ class Cart {
         // if cart empty, delete it from the session
         if(count($this->cart_contents) <= 2){
             unset($_SESSION['cart_contents']);
-            return FALSE;
+            return false;
         }else{
             $_SESSION['cart_contents'] = $this->cart_contents;
-            return TRUE;
+            return true;
         }
     }
 
@@ -175,7 +175,7 @@ class Cart {
         // unset & save
         unset($this->cart_contents[$row_id]);
         $this->save_cart();
-        return TRUE;
+        return true;
     }
 
     /**

@@ -43,10 +43,10 @@
             $(this).parent().addClass('class_for_border');
 
             quickViewHeader.text(header);
-            quickViewHeader.addClass("text_class")
+            quickViewHeader.addClass("text_class");
             quickViewPrice.text("Price: " + price);
             quickViewDescription.text(description);
-            quickViewDescription.prepend('<p class="my-3 text_class">Details: </p>')
+            quickViewDescription.prepend('<p class="my-3 text_class">Details: </p>');
             quickViewPicture.attr('src', picture);
         }
 
@@ -138,10 +138,10 @@
         $(this).parent().addClass('class_for_border');
 
         quickViewHeader.text(header);
-        quickViewHeader.addClass("text_class")
+        quickViewHeader.addClass("text_class");
         quickViewPrice.text("Price: " + price);
         quickViewDescription.text(description);
-        quickViewDescription.prepend('<p class="my-3 text_class">Details: </p>')
+        quickViewDescription.prepend('<p class="my-3 text_class">Details: </p>');
         quickViewPicture.attr('src', picture);
     }
 
