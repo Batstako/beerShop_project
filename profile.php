@@ -7,6 +7,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 $username = $_SESSION['user'];
+$id = $_SESSION['id'];
 
 $sql = "SELECT
             username,
@@ -17,13 +18,13 @@ $sql = "SELECT
         FROM
             users
         WHERE
-             username = ?
+             id = ?
 
          ";
 
 $stmt = $pdo->prepare($sql);
 
-$stmt->execute([$username]);
+$stmt->execute([$id]);
 
 $user = $stmt->fetch();
 
@@ -32,7 +33,7 @@ $error = "";
 if (isset($_POST['submit_info'])) {
     $query = "UPDATE users
               SET info=:infoAboutMe
-              WHERE username = '$username'";
+              WHERE id = '$id'";
 
     $stmt = $pdo->prepare($query);
     
@@ -47,7 +48,7 @@ if (isset($_POST['submit_info'])) {
 if (isset($_POST['submit'])) {
     $query = "UPDATE users
             SET picture=:picture
-            WHERE username = '$username'";
+            WHERE id = '$id'";
 
     $stmt = $pdo->prepare($query);
 
@@ -132,7 +133,7 @@ if (isset($_POST['submit'])) {
         //header("Location: profile.php");
     }
     catch(Exception $exception){
-        $avatarQuery = "SELECT id, username, picture FROM users WHERE username = '$username'";
+        $avatarQuery = "SELECT id, username, picture FROM users WHERE id = '$id'";
         $avatarStmt = $pdo->prepare($avatarQuery);
 
         //$stmt->bindParam(1, $id);
@@ -147,7 +148,7 @@ if (isset($_POST['submit'])) {
 
 } else {
 
-    $avatarQuery = "SELECT id, username, picture FROM users WHERE username = '$username'";
+    $avatarQuery = "SELECT id, username, picture FROM users WHERE id = '$id'";
     $avatarStmt = $pdo->prepare($avatarQuery);
 
     //$stmt->bindParam(1, $id);
@@ -258,7 +259,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="row justify-content-md-center my-3 py-3">
                     <?php
-                        $beersSql = "SELECT b.user_id, a.username, b.product_name, b.product_id, b.product_description, b.order_qty, b.picture
+                        $beersSql = "SELECT b.user_id, a.username, a.id, b.product_name, b.product_id, b.product_description, b.order_qty, b.picture
                                     FROM users a 
                                     JOIN (SELECT username, u.id AS 'user_id', p.name AS 'product_name', p.description AS 'product_description', p.picture, p.id AS 'product_id', u.last_name, u.first_name, SUM(od.quantity) 
                                     AS 'order_qty' FROM products p 
@@ -266,7 +267,7 @@ if (isset($_POST['submit'])) {
                                     LEFT JOIN orders o ON od.order_id=o.id 
                                     LEFT JOIN users u ON o.user_id=u.id WHERE product_id IS NOT NULL
                                      GROUP BY u.username, p.id 
-                                     ORDER BY u.username, order_qty DESC) AS b ON a.id=b.user_id WHERE a.username = '$username' LIMIT 3";
+                                     ORDER BY u.username, order_qty DESC) AS b ON a.id=b.user_id WHERE a.id = '$id' LIMIT 3";
                         $beersStmt = $pdo->prepare($beersSql);
                         $beersStmt->execute();
 
@@ -283,16 +284,18 @@ if (isset($_POST['submit'])) {
                     ?>
                 </div>                    
             </div>
-
-            <div class="justify-content-md-center row my-3">
-                <a href="#" class="btn btn-warning mx-3 col-lg-2">Change info</a>
-                <a href="#" class="btn btn-warning mx-3 col-lg-2">My orders</a>
+            <?php
+            echo "<div class='justify-content-md-center row my-3'>
+                <a href='changeProfile.php' class='btn btn-warning mx-3 col-lg-2'>Change info</a>
+                <a href='#' class='btn btn-warning mx-3 col-lg-2'>My orders</a>
             </div>
-            <div class="justify-content-md-center row my-3">
-                <a href="wallet.php" class="btn btn-warning mx-3 col-lg-2">My wallet</a>
-                <a href="viewCart.php" class="btn btn-warning mx-3 col-lg-2">Basket</a>
-            </div>
+            <div class='justify-content-md-center row my-3'>
+                <a href='wallet.php' class='btn btn-warning mx-3 col-lg-2'>My wallet</a>
+                <a href='viewCart.php' class='btn btn-warning mx-3 col-lg-2'>Basket</a>
+            </div>";
+            ?>
         </div>
+
         <div class="col-sm-1"></div>
     </div>
 

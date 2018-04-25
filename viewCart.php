@@ -9,18 +9,19 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 $username = $_SESSION['user'];
+$id = $_SESSION['id'];
 $sql = "SELECT
             wallet
         FROM
             users
         WHERE
-             username = ?
+             id = ?
 
          ";
 
 $stmt = $pdo->prepare($sql);
 
-$stmt->execute([$username]);
+$stmt->execute([$id]);
 
 $user = $stmt->fetch();
 

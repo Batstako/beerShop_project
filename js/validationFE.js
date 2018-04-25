@@ -118,5 +118,56 @@ $(document).ready(function () {
 
         });
 
+    $('#updateUser').validate({
+        rules: {
+            username: {
+                required: true,
+                alphanumeric: true
+            },
+
+            firstName: {
+                required: true,
+                nowhitespace: true,
+                lettersonly: true
+            },
+
+            lastName: {
+                required: true,
+                nowhitespace: true,
+                lettersonly: true
+            },
+
+            email: {
+                required: true,
+                mailRegEx: true
+            },
+
+            phone: {
+                required: true,
+                telephone: true
+            },
+
+            address: {
+                required: true
+            },
+
+            age: {
+                required: true
+            }
+        },
+
+        messages: {
+            username: {
+                alphanumeric: "Cannot contain special symbols"
+            },
+            address: "Please enter your address",
+            email:{
+                required: "Please enter an email address"
+            },
+            age: "Your age must be 18+"
+        }
+
+    });
+
 
 });

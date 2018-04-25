@@ -14,18 +14,19 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 $username = $_SESSION['user'];
+$id = $_SESSION['id'];
 $sql = "SELECT
             wallet
         FROM
             users
         WHERE
-             username = ?
+             id = ?
 
          ";
 
 $stmt = $pdo->prepare($sql);
 
-$stmt->execute([$username]);
+$stmt->execute([$id]);
 
 $user = $stmt->fetch();
 
@@ -35,12 +36,12 @@ if (isset($_POST['deposit'])) {
 
     $query = "UPDATE users 
                     SET wallet=:wallet
-                    WHERE username=:username";
+                    WHERE id=:id";
 
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':wallet', $wallet);
-    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':id', $id);
     if ($stmt->execute()) {
         echo "<div class='alert alert-success'>Record was updated.</div>";
     }
