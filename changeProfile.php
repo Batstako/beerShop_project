@@ -158,6 +158,7 @@ else{
                         <td>
                             <input type='submit' value='Save' class='btn btn-success' />
                             <a href='profile.php' class='btn btn-danger'>Back to your profile</a>
+                            <a href='passwordChange.php' class='btn btn-danger'>Change Password</a>
                         </td>
                     </tr>
                 </table>
