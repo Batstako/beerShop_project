@@ -88,7 +88,7 @@ else{
         echo "</div>";
     }
     // USER INFORMATION
-    $userQuery = "SELECT o.id as order_id, o.date, o.total_price, u.first_name, u.last_name, u.address, u.phone, u.email, o.status FROM orders o
+    $userQuery = "SELECT o.id as order_id, o.date, o.total_price, u.first_name, u.username, u.last_name, u.address, u.phone, u.email, o.status FROM orders o
                   JOIN users u on u.id=o.user_id WHERE o.id = {$_GET['id']}";
     $userStmt = $pdo->prepare($userQuery);
     $userStmt->execute();
@@ -105,8 +105,9 @@ else{
     echo "<thead>";
     echo "<tr class='bg-warning'>";
     //        echo "<th class='col-sm-1'>ID</th>";
-    echo "<th class='col-sm-6'>Name</th>";
-    echo "<th class='col-sm-2'>Address</th>";
+    echo "<th class='col-sm-2'>Username</th>";
+    echo "<th class='col-sm-3'>Name</th>";
+    echo "<th class='col-sm-3'>Address</th>";
     echo "<th class='col-sm-2'>Phone</th>";
     echo "<th class='col-sm-2'>Email</th>";
     echo "</tr>";
@@ -114,7 +115,7 @@ else{
     echo "<tbody>";
     echo "<tr>";
 
-
+            echo "<th class='align-middle'>{$userRow['username']}</th>";
             echo "<th class='align-middle'>{$fullName}</th>";
             echo "<td class='align-middle'>{$userRow['address']}</td>";
             echo "<td class='align-middle'>{$userRow['phone']}</td>";
