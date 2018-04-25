@@ -18,7 +18,7 @@ else{
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>All Beers</title>
+    <title>All Orders</title>
 
     <link rel="shortcut icon" href="images/logoNew_bubbles.png"/>
     <link type="text/css" rel="stylesheet" media="screen" href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
@@ -37,7 +37,7 @@ else{
 <div class="container" style="margin-top: 100px;">
     <div class="row justify-content-md-center">
         <div class="page-header col-lg-10 text-center">
-            <h2>Beers</h2>
+            <h2>Orders</h2>
         </div>
         <div style="text-align: center; margin-bottom: 25px;">
             <form name="sort" action="orders.php" method="get">
@@ -64,23 +64,23 @@ else{
     }
 
     if (isset($_GET['order']) && $sortCriteria == 'priceDesc') {
-        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone FROM orders o
+        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
                   JOIN users u on u.id=o.user_id ORDER by total_price DESC LIMIT :from_record_num, :records_per_page";
     }
     else if (isset($_GET['order']) && $sortCriteria == 'price') {
-        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone FROM orders o
+        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
                   JOIN users u on u.id=o.user_id ORDER by total_price ASC LIMIT :from_record_num, :records_per_page";
     }
     else if (isset($_GET['order']) && $sortCriteria == 'name') {
-        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone FROM orders o
+        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
                   JOIN users u on u.id=o.user_id ORDER by u.username ASC LIMIT :from_record_num, :records_per_page";
     }
     else if (isset($_GET['order']) && $sortCriteria == 'nameDesc') {
-        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone FROM orders o
+        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
                   JOIN users u on u.id=o.user_id ORDER by u.username DESC LIMIT :from_record_num, :records_per_page";
     }
     else {
-        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone FROM orders o
+        $query = "SELECT o.id as order_id, o.date, o.total_price, u.username, u.address, u.phone, o.status FROM orders o
                   JOIN users u on u.id=o.user_id ORDER by order_id DESC LIMIT :from_record_num, :records_per_page";
     }
 
@@ -98,12 +98,13 @@ else{
         echo "<thead>";
         echo "<tr class='bg-warning'>";
         //        echo "<th class='col-sm-1'>ID</th>";
-        echo "<th class='col-sm-2'>Order Id</th>";
-        echo "<th class='col-sm-4'>Username</th>";
-        echo "<th class='col-sm-1'>Address</th>";
-        echo "<th class='col-sm-1'>Phone</th>";
+        echo "<th class='col-sm-1'>Order Id</th>";
+        echo "<th class='col-sm-2'>Username</th>";
+        echo "<th class='col-sm-3'>Address</th>";
+        echo "<th class='col-sm-2'>Phone</th>";
         echo "<th class='col-sm-1'>Total Price</th>";
-        echo "<th class='col-sm-4 text-center'>Action</th>";
+        echo "<th class='col-sm-1'>Status</th>";
+        echo "<th class='col-sm-2 text-center'>Action</th>";
         echo "</tr>";
         echo "</thead>";
         echo "<tbody>";
@@ -115,7 +116,14 @@ else{
             echo "<td class='align-middle' style='text-align: justify; word-break: break-all;'>{$username}</td>";
             echo "<td class='align-middle'>{$address}</td>";
             echo "<td class='align-middle'>{$phone}</td>";
+//            echo "<select class='btn' name='status'>";
+//            echo "<option>Status:</option>"
+//            echo "        <option value='name'>Username (A-Z)</option>";
+//            echo "        <option value='nameDesc'>Username (Z-A)</option>";
+//            echo "        <option value='price'>Price (Low > High)</option>";
+//            echo "</select>";
             echo "<td class='align-middle'>{$total_price}</td>";
+            echo "<td class='align-middle'>{$status}</td>";
             echo "<td class='align-middle'>";
             echo "<div class='row justify-content-md-center align-middle'>";
             //          echo "<a href='read_one.php?id={$id}' class='btn btn-info mr-1'>View</a>";
