@@ -37,6 +37,13 @@ else{
     if (isset($_POST['status'])) {
         $orderStatus = $_POST['status'];
     }
+    echo "    
+           <div class='row'>
+                <div class='col-lg-1'></div>
+                <a href='orders.php' class='btn btn-primary mb-3 ml-4'>Back to orders</a>
+          </div>";
+
+    // ORDER INFORMATION
 
     $query = "SELECT o.order_id as order_id, o.product_id, o.quantity, p.name, p.price FROM order_detail o
                 JOIN products p on p.id=o.product_id WHERE o.order_id = {$id} ORDER by order_id DESC";
@@ -77,7 +84,50 @@ else{
         echo "</tbody>";
 
         echo "</table>";
+        echo "</div>";
+        echo "</div>";
     }
+    // USER INFORMATION
+    $userQuery = "SELECT o.id as order_id, o.date, o.total_price, u.first_name, u.last_name, u.address, u.phone, u.email, o.status FROM orders o
+                  JOIN users u on u.id=o.user_id WHERE o.id = {$_GET['id']}";
+    $userStmt = $pdo->prepare($userQuery);
+    $userStmt->execute();
+    $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
+    $fullName = $userRow['first_name'] . ' ' . $userRow['last_name'];
+
+    echo "<div class='page-header'>";
+    echo "    <h1>User Information</h1>";
+    echo "</div>";
+    echo "<div class='row justify-content-md-center'>";
+    //            echo "<div class='col-lg-1'></div>";
+    echo "<div class='table-responsive col-lg-10'>";
+    echo "<table id='beerTable' class='table table-hover '>";
+    echo "<thead>";
+    echo "<tr class='bg-warning'>";
+    //        echo "<th class='col-sm-1'>ID</th>";
+    echo "<th class='col-sm-6'>Name</th>";
+    echo "<th class='col-sm-2'>Address</th>";
+    echo "<th class='col-sm-2'>Phone</th>";
+    echo "<th class='col-sm-2'>Email</th>";
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    echo "<tr>";
+
+
+            echo "<th class='align-middle'>{$fullName}</th>";
+            echo "<td class='align-middle'>{$userRow['address']}</td>";
+            echo "<td class='align-middle'>{$userRow['phone']}</td>";
+            echo "<td class='align-middle'>{$userRow['email']}</td>";
+            echo "<td class='align-middle'>";
+            echo "<div class='row justify-content-md-center align-middle'>";
+            echo "</div>";
+            echo "</td>";
+            echo "</tr>";
+        echo "</tbody>";
+        echo "</table>";
+
+    // STATUS OF ORDER
     $statusQuery = "SELECT * FROM orders WHERE id = {$_GET['id']}";
     $statusStmt = $pdo->prepare($statusQuery);
     $statusStmt->execute();
