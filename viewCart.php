@@ -2,31 +2,6 @@
 
 require_once 'cart.php';
 $cart = new Cart;
-if (isset($_SESSION['id']) || isset($_COOKIE['remember_me'])) {
-    $username = $_SESSION['user'];
-
-    $sql = "SELECT
-            *
-        FROM
-            users
-        WHERE
-             username = ?
-
-         ";
-
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([$username]);
-
-    $user = $stmt->fetch();
-}
-else{
-    header('Location: login.php');
-    exit;
-}
-?>
-
-<?php
 require_once 'connect.php';
 
 if (!isset($_SESSION['user'])) {
