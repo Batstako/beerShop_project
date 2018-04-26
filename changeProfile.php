@@ -87,15 +87,25 @@ else{
             validateEmail($email);
             validatePhone($phone);
             validateAge($age);
-            checkUsernameExists($username, $pdo);
-            checkEmailExists($email, $pdo);
+
+            $userQuery = "SELECT * FROM users WHERE id = " .$id;
+            $userStmt = $pdo->prepare($userQuery);
+            $userStmt->execute();
+            $row = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+            if($row['username'] != $username){
+                checkUsernameExists($username, $pdo);
+            }
+
+            if($row['email'] != $email){
+                checkEmailExists($email, $pdo);
+            }
 
             $query = "UPDATE users 
                     SET username=:username, first_name=:first_name, last_name=:last_name, email=:email,
                     address=:address, age=:age, phone=:phone
-                    WHERE id=" .$_GET['id'];
+                    WHERE id=" .$id;
             $stmt = $pdo->prepare($query);
-
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':first_name', $first_name);
             $stmt->bindParam(':last_name', $last_name);
@@ -131,7 +141,7 @@ else{
 
             <?php endif; ?>
             <?php $error = ''; ?>
-            <form id="updateUser" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}");?>" method="post" enctype="multipart/form-data">
+            <form id="updateUser" action="#" method="post" enctype="multipart/form-data">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Username:</td>
