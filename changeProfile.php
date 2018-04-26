@@ -12,7 +12,7 @@ else{
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Edit Beer</title>
+    <title>Edit Profile</title>
 
     <link rel="shortcut icon" href="images/logoNew_bubbles.png"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
