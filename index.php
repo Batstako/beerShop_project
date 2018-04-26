@@ -56,7 +56,7 @@
                     <?php
                     $query = ("SELECT * FROM (
                     SELECT * FROM order_detail ORDER BY id DESC LIMIT 3
-                    ) as r ORDER BY id");
+                    ) as r ORDER BY id DESC");
                     $stmt = $pdo->prepare($query);
                     $stmt->execute();
                     $num = $stmt->rowCount();
