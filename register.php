@@ -27,49 +27,17 @@ try {
         $email = $form['email'];
         $age = $form['age'];
         $phone = $form['phone'];
-//Retrieve the field values from our registration form.
+
         $username = !empty($_POST['username']) ? trim($_POST['username']) : null;
         $password = !empty($_POST['password']) ? trim($_POST['password']) : null;
 
-//TO ADD: Error checking (username characters, password length, etc).
-//Basically, you will need to add your own error checking BEFORE
-//the prepared statement is built and executed.
+        // VALIDATIONS
+        validateUsername($username);
+        validatePasswords($password, $confirmPass);
+        validateEmail($email);
+        validatePhone($phone);
+        validateAge($age);
 
-        //Validations username
-        if (strlen($username) < 4 || strlen($username) > 8 || empty($username)) {
-            throw new Exception("User name must be between 4 an 8 symbols.");
-        }
-        $patern = '#^[A-Za-z0-9]+$#';
-        if (!preg_match($patern, $username)) {
-            throw new Exception("User name must not contain special characters.");
-        }
-        //Validation password
-        if (strlen($password) < 8 || strlen($password) > 15 || empty($password)) {
-            throw new Exception("Password must be between 8 an 15 symbols.");
-        }
-        $patern = '#^(?=(.*\d){2,})(?=.*[A-Z]{1,})(?=.*[a-zA-Z]{2,})(?=.*[!@~\#$%^&?]{1,})[0-9a-zA-Z!@~\#?$^%&`]+$#';
-        if (!preg_match($patern, $password)) {
-            throw new Exception("Password must contains at least 1 special symbol, 1 uppercase letter, 2 numbers and 3 letters.");
-        }
-        if ($password != $confirmPass) {
-            throw new Exception("Passwords do not match.");
-        }
-        //Validation email
-        $patern = '#^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$#';
-        if (!preg_match($patern, $email)) {
-            throw new Exception("Please fill valid email.");
-        }
-        //Validation phone
-
-        $patern = '#^[0-9]{10,10}$#';
-
-        if (strlen($phone) != 10 || !preg_match($patern, $phone)) {
-            throw new Exception("Phone must be 10 digits.");
-        }
-        //Validation age
-        if (intval($age) < 18) {
-            throw new Exception("You must be at least 18 years old");
-        }
         //Validation check
         if (!isset($_POST['gdpr'])) {
             throw new Exception("You must agree with GDPR.");
@@ -80,47 +48,9 @@ try {
         }
 
 
-//Now, we need to check if the supplied username already exists.
+        checkUsernameExists($username, $pdo);
+        checkEmailExists($email, $pdo);
 
-//Construct the SQL statement and prepare it.
-        $sql = "SELECT COUNT(username) AS num FROM users WHERE username = :username";
-        $stmt = $pdo->prepare($sql);
-
-//Bind the provided username to our prepared statement.
-        $stmt->bindValue(':username', $username);
-
-//Execute.
-        $stmt->execute();
-
-//Fetch the row.
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-//If the provided username already exists - display error.
-//TO ADD - Your own method of handling this error. For example purposes,
-//I'm just going to kill the script completely, as error handling is outside
-//the scope of this tutorial.
-        if ($row['num'] > 0) {
-            throw new Exception('That username already exists!');
-        }
-        $sql = "SELECT COUNT(email) AS test FROM users WHERE email = :email";
-        $stmt = $pdo->prepare($sql);
-
-//Bind the provided username to our prepared statement.
-        $stmt->bindValue(':email', $email);
-
-//Execute.
-        $stmt->execute();
-
-//Fetch the row.
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-//If the provided username already exists - display error.
-//TO ADD - Your own method of handling this error. For example purposes,
-//I'm just going to kill the script completely, as error handling is outside
-//the scope of this tutorial.
-        if ($result['test'] > 0) {
-            throw new Exception('That email already exists!');
-        }
 //Hash the password as we do NOT want to store our passwords in plain text.
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 

@@ -1,4 +1,5 @@
 <?php
+include 'php_includes/validations.php';
 require_once 'connect.php';
 if (isset($_SESSION['user'])) {
     $error = '';
@@ -72,13 +73,6 @@ else{
     if($_POST){
 
         try{
-
-            // write update query
-            // in this case, it seemed like we have so many fields to pass and
-            // it is better to label them and not use question marks
-
-
-
             // posted values
             $username=htmlspecialchars(strip_tags($_POST['username']));
             $first_name=htmlspecialchars(strip_tags($_POST['first_name']));
@@ -88,64 +82,13 @@ else{
             $age=htmlspecialchars(strip_tags($_POST['age']));
             $phone=htmlspecialchars(strip_tags($_POST['phone']));
 
-            // Validations
-            if (strlen($username) < 4 || strlen($username) > 8 || empty($username)) {
-                throw new Exception("User name must be between 4 an 8 symbols.");
-            }
-            $patern = '#^[A-Za-z0-9]+$#';
-            if (!preg_match($patern, $username)) {
-                throw new Exception("User name must not contain special characters.");
-            }
-
-            $patern = '#^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$#';
-            if (!preg_match($patern, $email)) {
-                throw new Exception("Please fill valid email.");
-            }
-
-            $patern = '#^[0-9]{10,10}$#';
-            if (strlen($phone) != 10 || !preg_match($patern, $phone)) {
-                throw new Exception("Phone must be 10 digits.");
-            }
-
-            //Validation age
-            if (intval($age) < 18) {
-                throw new Exception("You must be at least 18 years old");
-            }
-
-            $sql = "SELECT COUNT(username) AS num FROM users WHERE username = :username";
-            $stmt = $pdo->prepare($sql);
-
-//Bind the provided username to our prepared statement.
-            $stmt->bindValue(':username', $username);
-
-//Execute.
-            $stmt->execute();
-
-//Fetch the row.
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-//If the provided username already exists - display error.
-//TO ADD - Your own method of handling this error. For example purposes,
-//I'm just going to kill the script completely, as error handling is outside
-//the scope of this tutorial.
-            if ($row['num'] > 0) {
-                throw new Exception('That username already exists!');
-            }
-            $sql = "SELECT COUNT(email) AS test FROM users WHERE email = :email";
-            $stmt = $pdo->prepare($sql);
-
-//Bind the provided username to our prepared statement.
-            $stmt->bindValue(':email', $email);
-
-//Execute.
-            $stmt->execute();
-
-//Fetch the row.
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($result['test'] > 0) {
-                throw new Exception('That email already exists!');
-            }
+            // VALIDATE
+            validateUsername($username);
+            validateEmail($email);
+            validatePhone($phone);
+            validateAge($age);
+            checkUsernameExists($username, $pdo);
+            checkEmailExists($email, $pdo);
 
             $query = "UPDATE users 
                     SET username=:username, first_name=:first_name, last_name=:last_name, email=:email,

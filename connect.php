@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set("session.save_handler",  "files");
 error_reporting(E_ALL);
-
+global $pdo;
 
 session_start();
 

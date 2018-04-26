@@ -45,29 +45,13 @@ else{
     if($_POST){
 
         try{
-            // prepare select query
-            $query = "SELECT * FROM users WHERE id = " .$id;
-            $stmt = $pdo->prepare( $query );
-
-
-            // execute our query
-            $stmt->execute();
-
-            // store retrieved row to a variable
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
             $password = $_POST['old_password'];
             $passwordHash = $user['password'];
 
-            if (!password_verify($password, $passwordHash)) {
+            // CHECK USER PASSWORD WITH PASSWORD IN DATABASE
+            verifyUserPassword($id, $password, $passwordHash, $pdo);
+            validatePasswords($_POST['password'], $_POST['confirmPass']);
 
-                throw new Exception("Wrong password!");
-
-            }
-            elseif($_POST['password'] !== $_POST['confirmPass']){
-                throw new Exception("New password and confirm new password doesn't match!");
-            }
-            else{
                 $query = "UPDATE users 
                     SET password=:password
                     WHERE id= ".$_GET['id'];
@@ -79,7 +63,6 @@ else{
                 $stmt->bindParam(':password', $newPasswordHash);
                 $result = $stmt->execute();
 
-            }
 
         }
         catch(Exception $exception){
