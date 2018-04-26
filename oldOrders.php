@@ -40,7 +40,7 @@ else{
             <h2>Completed Orders</h2>
         </div>
         <div style="text-align: center; margin-bottom: 25px;">
-            <form name="sort" action="orders.php" method="get">
+            <form name="sort" action="oldOrders.php" method="get">
                 <select class="btn" name="order">
                     <option>Order by:</option>
                     <option value="name">Username (A-Z)</option>
