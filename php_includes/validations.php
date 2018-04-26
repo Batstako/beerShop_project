@@ -60,7 +60,7 @@ function checkEmailExists($email, $pdo){
         throw new Exception('That email already exists!');
     }
 }
-function verifyUserPassword($id, $password,$passwordHash, $pdo){
+function verifyUserPassword($id, $password, $pdo){
     $query = "SELECT * FROM users WHERE id = " .$id;
     $stmt = $pdo->prepare( $query );
 
@@ -70,6 +70,7 @@ function verifyUserPassword($id, $password,$passwordHash, $pdo){
 
     // store retrieved row to a variable
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $passwordHash = $user['password'];
     if (!password_verify($password, $passwordHash)) {
         throw new Exception("Wrong password!");
 

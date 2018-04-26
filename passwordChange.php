@@ -1,6 +1,7 @@
 <?php
+include 'php_includes/validations.php';
 require_once 'connect.php';
-if (isset($_SESSION['user'])) {
+if (isset($_SESSION['id'])) {
     $error = '';
 }
 else{
@@ -26,13 +27,7 @@ else{
 </header>
 <div class="container" style="margin-top: 50px; margin-bottom: 50px;">
 
-    <?php if ($error) : ?>
-        <div class="alert alert-danger">
-            <strong> <?= $error ?></strong>
-        </div>
 
-    <?php endif; ?>
-    <?php $error = ''; ?>
 
     <div class="page-header">
         <h1>Change your details</h1>
@@ -46,38 +41,55 @@ else{
 
         try{
             $password = $_POST['old_password'];
-            $passwordHash = $user['password'];
+            $query = "SELECT * FROM users WHERE id = " .$id;
+            $stmt = $pdo->prepare( $query );
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $oldPassword = $row['password'];
 
-            // CHECK USER PASSWORD WITH PASSWORD IN DATABASE
-            verifyUserPassword($id, $password, $passwordHash, $pdo);
+            if(!password_verify($password, $oldPassword)){
+                throw new Exception("Wrong password!");
+            }
+
             validatePasswords($_POST['password'], $_POST['confirmPass']);
 
-                $query = "UPDATE users 
+            $updateQuery = "UPDATE users 
                     SET password=:password
-                    WHERE id= ".$_GET['id'];
+                    WHERE id= " .$id;
+            $newPassword=htmlspecialchars(strip_tags($_POST['password']));
+            $newPasswordHash = password_hash($newPassword, PASSWORD_BCRYPT);
 
-                $newPassword=htmlspecialchars(strip_tags($_POST['password']));
-                $newPasswordHash = password_hash($newPassword, PASSWORD_BCRYPT);
-
-                $stmt = $pdo->prepare($query);
-                $stmt->bindParam(':password', $newPasswordHash);
-                $result = $stmt->execute();
-
+            $updateStmt = $pdo->prepare($updateQuery);
+            $updateStmt->bindParam(':password', $newPasswordHash);
+            if($updateStmt->execute()){
+                echo "<div class='alert alert-success'>Your profile has been updated.</div>";
+                } else{
+                    echo "<div class='alert alert-danger'>Unable to update profile.</div>";
+                }
 
         }
         catch(Exception $exception){
             $error = $exception->getMessage();
+            //var_dump($error);
         }
+
 
 
 
     }
     ?>
+    <?php if ($error) : ?>
+        <div class="alert alert-danger">
+            <strong> <?= $error ?></strong>
+        </div>
+
+    <?php endif; ?>
+    <?php $error = ''; ?>
 
     <div class="col-sm-12">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
-            <form id="updateUser" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}");?>" method="post" enctype="multipart/form-data">
+            <form id="updateUser" action="#" method="post">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Old Password:</td>
