@@ -72,7 +72,7 @@ if (isset($_POST['deposit'])) {
 </header>
 
 <div id="main_container" class='container' style="margin: 150px auto; text-align: center;">
-  <div style="position:fixed; margin-left: 50%;"><h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> <img src="images/wallet_card.png" style="width: 10%;" /></div>
+  <div style="position:fixed; margin-left: 50%;"><h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> <img id="wallet" src="images/wallet_card.png" style="width: 10%;" /></div>
     <form name="sort" action="catalog.php" method="get">
         <select class="btn" name="order">
             <option>Order by:</option>
@@ -186,6 +186,9 @@ if (isset($_POST['deposit'])) {
     <script>
         $(document).ready(function () {
             $("#catalog").addClass('text_shadow');
+            $('#wallet').click(function() {
+                window.location.href = this.id + '.php';
+            });
         });
 
         window.onscroll = function () {

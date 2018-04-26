@@ -124,7 +124,7 @@ if (isset($_POST['deposit'])) {
         echo  "<div class='alert alert-danger'> We don't have {$UrlQuantity} of {$Url}. We currently have {$beerRow['quantity']} in stock. </div>";
     } ?>
     <h1>Order Preview</h1>
-    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img src="images/wallet_card.png" style="width: 20%;" /></div>
+    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img id="wallet" src="images/wallet_card.png" style="width: 20%;" /></div>
     <table class="table">
         <thead>
         <tr>
@@ -177,5 +177,15 @@ if (isset($_POST['deposit'])) {
 <footer class="footer navbar-fixed-bottom">
     <?php include_once "php_includes/footer.php"; ?>
 </footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#wallet').click(function () {
+            window.location.href = this.id + '.php';
+        });
+    });
+</script>
 </body>
 </html>
