@@ -63,6 +63,7 @@ else{
         echo "<th class='col-sm-2'>Quantity</th>";
         echo "<th class='col-sm-2'>Single Price</th>";
         echo "<th class='col-sm-2'>Total Price</th>";
+        echo "<th class='col-sm-1'></th>";
         echo "</tr>";
         echo "</thead>";
         echo "<tbody>";
@@ -75,7 +76,7 @@ else{
             $orderPrice += $totalPrice;
             $totalPrice = number_format((float)$totalPrice, 2, '.', '');
             echo "<th class='align-middle'>{$name}</th>";
-            echo "<td class='align-middle' style='text-align: justify; word-break: break-all;'>{$quantity}</td>";
+            echo "<td class='align-middle'>{$quantity}</td>";
             echo "<td class='align-middle'>{$price}</td>";
             echo "<td class='align-middle'>{$totalPrice}</td>";
             echo "<td class='align-middle'>";
@@ -88,7 +89,6 @@ else{
 
         echo "</table>";
         echo "<p style='float: right; '> Total order price: {$orderPrice}</p>";
-        
         echo "</div>";
         echo "</div>";
     }
@@ -115,6 +115,7 @@ else{
     echo "<th class='col-sm-3'>Address</th>";
     echo "<th class='col-sm-2'>Phone</th>";
     echo "<th class='col-sm-2'>Email</th>";
+    echo "<th class='col-sm-1'></th>";
     echo "</tr>";
     echo "</thead>";
     echo "<tbody>";

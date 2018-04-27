@@ -76,7 +76,7 @@
 
 
                     ?>
-                    <div class="col-lg-1"></div>
+                    
 
 <!--                    <div class="fron_beer">-->
 <!--                        <p><img src="images/qh_beer.png" ></p>-->
@@ -90,11 +90,11 @@
 <!--                        <p><img src="images/qh_beer.png"></p>-->
 <!--                        <p>QH beer: amber beer</p>-->
 <!--                    </div>-->
+                </div>
 
+            </div>
         </div>
-
-    </div>
-    </div>
+        <div class="col-lg-1"></div>
     </div>  
     
     
