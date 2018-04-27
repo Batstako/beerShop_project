@@ -9,10 +9,10 @@ global $pdo;
 session_start();
 
 //Our MySQL user account.
-define('MYSQL_USER', 'root');
+define('MYSQL_USER', 'qh-beer');
 
 //Our MySQL password.
-define('MYSQL_PASSWORD', '');
+define('MYSQL_PASSWORD', 'pass');
 
 //The server that MySQL is located on.
 define('MYSQL_HOST', 'localhost');
