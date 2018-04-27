@@ -280,7 +280,7 @@ input #avatar{
 
 .fron_beer {
     margin: 10px;
-}
+} 
 
 /*Table css for fixing start here*/
 
@@ -401,4 +401,14 @@ input #avatar{
     background-color: #722040;
 }#container_search{
     margin: 180px auto 150px;
+}
+
+.view_order_table {
+    background-color: #eee;
+    border-color:#eee;
+    border-radius:5px
+}
+
+.table_header {
+    background-color: #fff;
 }
