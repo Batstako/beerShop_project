@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
                 //$file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
             }
 
-            if ($_FILES['picture']['size'] > (2048000)) {
+            if ($_FILES['picture']['size'] > (5242880)) {
                 throw new Exception("Image must be less than 2 MB in size.");
                 //$file_upload_error_messages .= "<div>Image must be less than 2 MB in size.</div>";
             }
