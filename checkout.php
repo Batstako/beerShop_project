@@ -124,7 +124,7 @@ if (isset($_POST['deposit'])) {
         echo  "<div class='alert alert-danger'> We don't have {$UrlQuantity} of {$Url}. We currently have {$beerRow['quantity']} in stock. </div>";
     } ?>
     <h1>Order Preview</h1>
-    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img id="wallet" src="images/wallet_card.png" style="width: 20%;" /></div>
+    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img id="wallet" src="images/wallet_card.png" style="width: 20%; cursor: pointer" /></div>
     <table class="table">
         <thead>
         <tr>
