@@ -1,8 +1,5 @@
 <?php
-
-/**
- * Include our MySQL connection.
- */
+include 'php_includes/validations.php';
 require_once 'connect.php';
 $username = '';
 $firstName = '';
