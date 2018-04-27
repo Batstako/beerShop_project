@@ -9,7 +9,7 @@ if($page>1){
 
     $prev_page = $page - 1;
     echo "<li>";
-    echo "<a href='{$page_url}page={$prev_page}'>";
+    echo "<a href='{$page_url}page={$first_page}'>";
     echo "<span style='margin:0 .5em;'>&laquo;</span>";
     echo "</a>";
     echo "</li>";
@@ -60,7 +60,7 @@ if($page<$total_pages){
     $next_page = $page + 1;
 
     echo "<li>";
-    echo "<a href='{$page_url}page={$next_page}'>";
+    echo "<a href='{$page_url}page={$total_pages}'>";
     echo "<span style='margin:0 .5em;'>&raquo;</span>";
     echo "</a>";
     echo "</li>";
