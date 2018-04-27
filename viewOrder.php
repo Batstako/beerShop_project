@@ -27,9 +27,9 @@ else{
 <header>
     <?php include_once "php_includes/header.php"; ?>
 </header>
-<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+<div class="container" style="margin-top: 150px; margin-bottom: 150px;">
 
-    <div class="page-header">
+    <div>
         <h1>View Order</h1>
     </div>
 
@@ -41,7 +41,7 @@ else{
     echo "    
            <div class='row'>
                 <div class='col-lg-1'></div>
-                <a href='orders.php' class='btn btn-primary mb-3 ml-4'>Back to orders</a>
+                <a href='orders.php' class='btn btn-primary mb-3'>Back to orders</a>
           </div>";
 
     // ORDER INFORMATION
@@ -54,7 +54,7 @@ else{
     if($num>0) {
         echo "<div class='row justify-content-md-center'>";
 //            echo "<div class='col-lg-1'></div>";
-        echo "<div class='table-responsive col-lg-10 view_order_table'>";
+        echo "<div class='table-responsive col-lg-10 view_order_table' style='padding:0px'>";
         echo "<table id='beerTable' class='table table-hover'>";
         echo "<thead>";
         echo "<tr class='bg-warning'>";
@@ -77,8 +77,8 @@ else{
             $totalPrice = number_format((float)$totalPrice, 2, '.', '');
             echo "<th class='align-middle'>{$name}</th>";
             echo "<td class='align-middle'>{$quantity}</td>";
-            echo "<td class='align-middle'>{$price}</td>";
-            echo "<td class='align-middle'>{$totalPrice}</td>";
+            echo "<td class='align-middle'>{$price} lv</td>";
+            echo "<td class='align-middle'>{$totalPrice} lv</td>";
             echo "<td class='align-middle'>";
             echo "<div class='row justify-content-md-center align-middle'>";
             echo "</div>";
@@ -88,7 +88,7 @@ else{
         echo "</tbody>";
 
         echo "</table>";
-        echo "<p style='float: right; '> Total order price: {$orderPrice}</p>";
+        echo "<p style='float: right; '> Total order price: {$orderPrice} lv </p>";
         echo "</div>";
         echo "</div>";
     }
@@ -100,12 +100,12 @@ else{
     $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
     $fullName = $userRow['first_name'] . ' ' . $userRow['last_name'];
 
-    echo "<div class='page-header'>";
-    echo "    <h1>User Information</h1>";
+    echo "<div style='margin-top: 50px;'>";
+    echo "    <h1 style='z-index:-9999'>User Information</h1>";
     echo "</div>";
     echo "<div class='row justify-content-md-center' >";
     //            echo "<div class='col-lg-1'></div>";
-    echo "<div class='table-responsive col-lg-10 view_order_table'>";
+    echo "<div class='table-responsive col-lg-10 view_order_table' style='padding:0px'>";
     echo "<table id='beerTable' class='table table-hover'>";
     echo "<thead>";
     echo "<tr class='bg-warning'>";
