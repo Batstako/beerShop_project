@@ -142,7 +142,7 @@ else{
         echo "</table>";
         // PAGINATION
         // count total number of rows
-        $query = "SELECT COUNT(*) as total_rows FROM orders";
+        $query = "SELECT COUNT(*) as total_rows FROM orders WHERE status = 'Processing'" ;
         $stmt = $pdo->prepare($query);
         // execute query
         $stmt->execute();

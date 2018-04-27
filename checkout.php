@@ -170,7 +170,7 @@ if (isset($_POST['deposit'])) {
     <div class="footBtn">
         <a href="catalog.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Continue Shopping</a>
         <a href="cartAction.php?action=placeOrder" class="btn btn-success orderBtn">Place Order <i class="glyphicon glyphicon-menu-right"></i></a>
-        <a href="viewCart.php" class="btn btn-warning">Back to cart</a>
+        <a href="viewCart.php" class="btn btn-warning">Back to Basket</a>
     </div>
 </div>
 
