@@ -49,7 +49,19 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
         $userStmt = $pdo->prepare($userQuery);
         $userStmt->execute();
         $userRow = $userStmt->fetch(PDO::FETCH_ASSOC);
-        if($cart->total() > $userRow['wallet'])
+        $loyaltyQuery = "SELECT * FROM ( SELECT * FROM users ORDER BY total_spent DESC LIMIT 5) as u ORDER BY total_spent DESC";
+        $loyaltyQueryStmt = $pdo->prepare($loyaltyQuery);
+        $loyaltyQueryStmt->execute();
+        $idsArr = array();
+        while($row = $loyaltyQueryStmt->fetch(PDO::FETCH_ASSOC))
+        {
+            $idsArr[] = $row['id'];
+
+        }
+        if(in_array($_SESSION['id'],$idsArr)){
+            $loyal = true;
+        }
+        if($cart->total($loyal) > $userRow['wallet'])
         {
             header ("Location: checkout.php?err=1");
         }
@@ -66,33 +78,79 @@ if(isset($_REQUEST['action']) && !empty($_REQUEST['action'])){
                     exit;
                 }
             }
-            $insertOrder = "INSERT INTO orders (user_id, total_price, `date`) VALUES ('" . $_SESSION['sessCustomerID'] . "', '" . $cart->total() . "', '" . date("Y-m-d H:i:s") . "')";
-            $stmt = $pdo->prepare($insertOrder);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+//             ("SELECT * FROM (
+//            SELECT * FROM order_detail ORDER BY id DESC LIMIT 3
+//                    ) as r ORDER BY id DESC")
+            $loyaltyQuery = "SELECT * FROM ( SELECT * FROM users ORDER BY total_spent DESC LIMIT 5) as u ORDER BY total_spent DESC";
+            $loyaltyQueryStmt = $pdo->prepare($loyaltyQuery);
+            $loyaltyQueryStmt->execute();
+            $idsArr = array();
+            while($row = $loyaltyQueryStmt->fetch(PDO::FETCH_ASSOC))
+            {
+                $idsArr[] = $row['id'];
 
-            if ($stmt) {
-                $orderID = $pdo->lastInsertId();
-                $sql = '';
-                // get cart items
-                $cartItems = $cart->contents();
-                foreach ($cartItems as $item) {
-                    $sql = "INSERT INTO order_detail (order_id, product_id, price, quantity) VALUES ('" . $orderID . "', '" . $item['id'] . "', '" . $item['price'] . "', '" . $item['qty'] . "')";
-                    $exec = $pdo->prepare($sql);
-                    $exec->execute();
-                }
-                // insert order items into database
-                //$insertOrderItems = $pdo->multi_query($sql);
+            }
+            if(in_array($_SESSION['id'],$idsArr)){
+                $loyal = true;
+                $newCartTotal = $cart->total() - $cart->total($loyal);
+                $insertOrder = "INSERT INTO orders (user_id, total_price, `date`) VALUES ('" . $_SESSION['sessCustomerID'] . "', '" . $newCartTotal . "', '" . date("Y-m-d H:i:s") . "')";
+                $stmt = $pdo->prepare($insertOrder);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($stmt) {
+                    $orderID = $pdo->lastInsertId();
+                    $sql = '';
+                    // get cart items
+                    $cartItems = $cart->contents();
+                    foreach ($cartItems as $item) {
+                        $sql = "INSERT INTO order_detail (order_id, product_id, price, quantity) VALUES ('" . $orderID . "', '" . $item['id'] . "', '" . $item['price'] . "', '" . $item['qty'] . "')";
+                        $exec = $pdo->prepare($sql);
+                        $exec->execute();
+                    }
+                    // insert order items into database
+                    //$insertOrderItems = $pdo->multi_query($sql);
 
 
-                if ($exec) {
-                    $cart->destroy();
-                    header("Location: orderSuccess.php?id=$orderID");
+                    if ($exec) {
+                        $cart->destroy();
+                        header("Location: orderSuccess.php?id=$orderID");
+                    } else {
+                        header("Location: checkout.php");
+                    }
                 } else {
                     header("Location: checkout.php");
                 }
-            } else {
-                header("Location: checkout.php");
+            }
+            else {
+                $insertOrder = "INSERT INTO orders (user_id, total_price, `date`) VALUES ('" . $_SESSION['sessCustomerID'] . "', '" . $cart->total() . "', '" . date("Y-m-d H:i:s") . "')";
+                $stmt = $pdo->prepare($insertOrder);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($stmt) {
+                    $orderID = $pdo->lastInsertId();
+                    $sql = '';
+                    // get cart items
+                    $cartItems = $cart->contents();
+                    foreach ($cartItems as $item) {
+                        $sql = "INSERT INTO order_detail (order_id, product_id, price, quantity) VALUES ('" . $orderID . "', '" . $item['id'] . "', '" . $item['price'] . "', '" . $item['qty'] . "')";
+                        $exec = $pdo->prepare($sql);
+                        $exec->execute();
+                    }
+                    // insert order items into database
+                    //$insertOrderItems = $pdo->multi_query($sql);
+
+
+                    if ($exec) {
+                        $cart->destroy();
+                        header("Location: orderSuccess.php?id=$orderID");
+                    } else {
+                        header("Location: checkout.php");
+                    }
+                } else {
+                    header("Location: checkout.php");
+                }
             }
         }
     }else{

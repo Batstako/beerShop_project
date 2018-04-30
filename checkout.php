@@ -124,7 +124,7 @@ if (isset($_POST['deposit'])) {
         echo  "<div class='alert alert-danger'> We don't have {$UrlQuantity} of {$Url}. We currently have {$beerRow['quantity']} in stock. </div>";
     } ?>
     <h1>Order Preview</h1>
-    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img id="wallet" src="images/wallet_card.png" style="width: 20%;" /></div>
+    <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img id="wallet" src="images/wallet_card.png" style="width: 20%; cursor: pointer" /></div>
     <table class="table">
         <thead>
         <tr>
@@ -153,9 +153,25 @@ if (isset($_POST['deposit'])) {
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="3"></td>
-            <?php if($cart->total_items() > 0){ ?>
-                <td class="text-center"><strong>Total <?php echo $cart->total().' lv'; ?></strong></td>
+            <td colspan="0"></td>
+            <?php if($cart->total_items() > 0){ $loyal = false; ?>
+                <td class="text-center"><strong>Total <?php echo $cart->total($loyal).' lv'; ?></strong></td>
+                <?php
+                $loyaltyQuery = "SELECT * FROM ( SELECT * FROM users ORDER BY total_spent DESC LIMIT 5) as u ORDER BY total_spent DESC";
+                $loyaltyQueryStmt = $pdo->prepare($loyaltyQuery);
+                $loyaltyQueryStmt->execute();
+                $idsArr = array();
+                while($loyaltyRow = $loyaltyQueryStmt->fetch(PDO::FETCH_ASSOC))
+                {
+                    $idsArr[] = $loyaltyRow['id'];
+
+                }
+                if(in_array( $id,$idsArr)){
+                    $loyal = true;
+                    $newCartTotal = $cart->total($loyal)?>
+                    <td class="text-center"><strong>Discount <?php echo  $newCartTotal .' lv'; ?></strong></td>
+                    <td class="text-center"><strong>Discounted Total <?php echo  $cart->total() - $newCartTotal .' lv'; ?></strong></td>
+                <?php } ?>
             <?php } ?>
         </tr>
         </tfoot>
@@ -170,7 +186,7 @@ if (isset($_POST['deposit'])) {
     <div class="footBtn">
         <a href="catalog.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Continue Shopping</a>
         <a href="cartAction.php?action=placeOrder" class="btn btn-success orderBtn">Place Order <i class="glyphicon glyphicon-menu-right"></i></a>
-        <a href="viewCart.php" class="btn btn-warning">Back to cart</a>
+        <a href="viewCart.php" class="btn btn-warning">Back to Basket</a>
     </div>
 </div>
 
