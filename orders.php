@@ -93,7 +93,9 @@ else{
            <div class='row'>
                 <div class='col-lg-1'></div>
                 <a href='oldOrders.php' class='btn btn-primary mb-3 ml-4'>Completed Orders</a>
+                <a href='loyalUsers.php' class='btn btn-primary mb-3 ml-4'>Top 5 users</a>
           </div>";
+
 
     if($num>0){
         echo "<div class='row justify-content-md-center'>";
