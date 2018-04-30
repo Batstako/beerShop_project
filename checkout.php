@@ -154,8 +154,24 @@ if (isset($_POST['deposit'])) {
         <tfoot>
         <tr>
             <td colspan="3"></td>
-            <?php if($cart->total_items() > 0){ ?>
-                <td class="text-center"><strong>Total <?php echo $cart->total().' lv'; ?></strong></td>
+            <?php if($cart->total_items() > 0){ $loyal = false; ?>
+                <td class="text-center"><strong>Total <?php echo $cart->total($loyal).' lv'; ?></strong></td>
+                <?php
+                $loyaltyQuery = "SELECT * FROM ( SELECT * FROM users ORDER BY total_spent DESC LIMIT 5) as u ORDER BY total_spent DESC";
+                $loyaltyQueryStmt = $pdo->prepare($loyaltyQuery);
+                $loyaltyQueryStmt->execute();
+                $idsArr = array();
+                while($loyaltyRow = $loyaltyQueryStmt->fetch(PDO::FETCH_ASSOC))
+                {
+                    $idsArr[] = $loyaltyRow['id'];
+
+                }
+                if(in_array( $id,$idsArr)){
+                    $loyal = true;
+                    $newCartTotal = $cart->total($loyal)?>
+                    <td class="text-center"><strong>Discount <?php echo  $newCartTotal .' lv'; ?></strong></td>
+                    <td class="text-center"><strong>Discounted Total <?php echo  $cart->total() - $newCartTotal .' lv'; ?></strong></td>
+                <?php } ?>
             <?php } ?>
         </tr>
         </tfoot>

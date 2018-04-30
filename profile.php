@@ -14,7 +14,8 @@ $sql = "SELECT
             first_name,
             age,
             picture,
-            info
+            info,
+            total_spent
         FROM
             users
         WHERE
@@ -234,6 +235,9 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="row justify-content-md-center">
                         <p class="col-lg-6 text-center px-2"> Age: <?= $user['age'] ?></p>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <p class="col-lg-6 text-center px-2"> Loyalty Points: <?= Round($user['total_spent'] / 10) ?></p>
                     </div>
                     <div class="row justify-content-md-center">
                         <div class="col-lg-6 text-center px-2"> About me: </div>

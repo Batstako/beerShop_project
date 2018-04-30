@@ -84,13 +84,14 @@ if (isset($_POST['deposit'])) {
 <div class="container" style="margin-top:50px; margin-bottom: 100px;">
     <h1>Basket</h1>
     <div style="position:fixed; margin-top: -50px; margin-left: 55%;"><h4 id="money" style="vertical-align: middle; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h4> <img id="wallet" src="images/wallet_card.png" style="width: 20%; cursor: pointer" /></div>
-    <table class="table">
-        <thead>
+    <div class='table-responsive col-lg-12'>
+    <table class="table col-sm-12">
+        <thead style="display:table-header-group;">
         <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
+            <th class="col-sm-3">Product</th>
+            <th class="col-sm-3">Price</th>
+            <th class="col-sm-3">Quantity</th>
+            <th class="col-sm-3">Subtotal</th>
             <th>&nbsp;</th>
         </tr>
         </thead>
@@ -104,7 +105,7 @@ if (isset($_POST['deposit'])) {
                 <tr>
                     <td style="vertical-align: middle;"><?php echo $item["name"]; ?></td>
                     <td style="vertical-align: middle;"><?php echo $item["price"].' lv'; ?></td>
-                    <td><input type="number" class="form-control text-center" value="<?php echo $item["qty"]; ?>" onchange="updateCartItem(this, '<?php echo $item["rowid"]; ?>')"></td>
+                    <td><input style="width: 90px;" type="number" class="form-control text-center" value="<?php echo $item["qty"]; ?>" onchange="updateCartItem(this, '<?php echo $item["rowid"]; ?>')"></td>
                     <td style="vertical-align: middle;"><?php echo $item["subtotal"].' lv'; ?></td>
                     <td>
                         <a href="cartAction.php?action=removeCartItem&id=<?php echo $item["rowid"]; ?>" class="btn btn-danger" onclick="return confirm('Are you sure?')"><i class="glyphicon glyphicon-trash"></i></a>
@@ -117,10 +118,26 @@ if (isset($_POST['deposit'])) {
         <tfoot>
         <tr>
             <td><a href="catalog.php" class="btn btn-warning"><i class="glyphicon glyphicon-menu-left"></i> Continue Shopping</a></td>
-            <td colspan="2"></td>
+            <td colspan="0"></td>
 
-            <?php if($cart->total_items() > 0){ ?>
+            <?php if($cart->total_items() > 0){  ?>
                 <td class="text-center"><strong>Total <?php echo ''.$cart->total().' lv'; ?></strong></td>
+                <?php
+                $loyaltyQuery = "SELECT * FROM ( SELECT * FROM users ORDER BY total_spent DESC LIMIT 5) as u ORDER BY total_spent DESC";
+                $loyaltyQueryStmt = $pdo->prepare($loyaltyQuery);
+                $loyaltyQueryStmt->execute();
+                $idsArr = array();
+                while($row = $loyaltyQueryStmt->fetch(PDO::FETCH_ASSOC))
+                {
+                    $idsArr[] = $row['id'];
+
+                }
+                if(in_array( $id,$idsArr)){
+                    $loyal = true;
+                    $newCartTotal = $cart->total($loyal)?>
+                    <td class="text-center"><strong>Discount <?php echo  $newCartTotal .' lv'; ?></strong></td>
+                    <td class="text-center"><strong>Discounted Total <?php echo  $cart->total() - $newCartTotal .' lv'; ?></strong></td>
+                <?php } ?>
 <!--                <td class="text-center"><strong>Wallet --><?php //echo $user['wallet'] .' lv' ?><!--</strong></td>-->
 <!--                --><?php
 //                if($cart->total() > $user['wallet'])
@@ -133,6 +150,7 @@ if (isset($_POST['deposit'])) {
         </tr>
         </tfoot>
     </table>
+    </div>
 </div>
 <footer class="footer navbar-fixed-bottom">
     <?php include_once "php_includes/footer.php"; ?>

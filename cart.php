@@ -51,7 +51,11 @@ class Cart {
      * Cart Total: Returns the total price
      * @return    int
      */
-    public function total(){
+    public function total($loyal = false){
+        if($loyal == true){
+            return $this->cart_contents['cart_total'] / 10;
+        }
+
         return $this->cart_contents['cart_total'];
     }
 

@@ -39,7 +39,7 @@ else{
         $orderStatus = $_POST['status'];
     }
     echo "    
-           <div class='row'>
+           <div class=''>
                 <div class='col-lg-1'></div>
                 <a href='orders.php' class='btn btn-primary mb-3 ml-4'>Back to orders</a>
           </div>";

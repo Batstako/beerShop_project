@@ -281,6 +281,9 @@ input #avatar{
 .fron_beer {
     margin: 10px;
 }
+.fron_beer:last-child {
+    margin-right: 0; !important;
+}
 
 /*Table css for fixing start here*/
 
