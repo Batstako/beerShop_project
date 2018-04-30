@@ -153,7 +153,7 @@ if (isset($_POST['deposit'])) {
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="3"></td>
+            <td colspan="0"></td>
             <?php if($cart->total_items() > 0){ $loyal = false; ?>
                 <td class="text-center"><strong>Total <?php echo $cart->total($loyal).' lv'; ?></strong></td>
                 <?php
