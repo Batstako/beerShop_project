@@ -11,7 +11,11 @@ if(isset($_GET['txt'])){
 
     $getName->execute(array('name' => $text));
 
-
+//    echo '<div id="balance" style="position:fixed; margin-left: 50%;">';
+//    echo '<h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance:   BGN</h3>';        
+//    echo '<img id="wallet" src="images/wallet_card.png" style="width: 10%;" />';       
+//    echo '</div>';     
+              
     while ($names = $getName->fetch(PDO:: FETCH_ASSOC)){
         extract($names);
         echo "<div class='product justify-content-md-center'>";

@@ -10,7 +10,7 @@
             minicart = [],
             totalPrice = [],
             miniCartPrice;
-
+        $(".click-callback").stars({ });   
         buy.on('click', addToCart);
         quickViewBtn.on('click', quickView);
         cart.on('click', showMiniCart);
@@ -20,6 +20,7 @@
         });
 
         function quickView() {
+           
             var description = $(this).parent().find('.description').text(),
                 header = $(this).parent().find('.header').text(),
                 price = $(this).parent().find('.price').text(),
@@ -28,6 +29,7 @@
                 quickViewPrice = $('.quickviewContainer .price'),
                 quickViewDescription = $('.quickviewContainer .description'),
                 quickViewPicture = $('.quickviewContainer .picture');
+                
             clearTimeout(timeQuick);
             if(quickview.hasClass('active') || mainDivInfo.hasClass('class_for_border')){
                 quickview.removeClass('active');
@@ -40,8 +42,11 @@
                 quickview.addClass('active');
                 $(this).parent().addClass('class_for_border');
             }
+            
+//            $(".click-callback").stars({ });
+            
             $(this).parent().addClass('class_for_border');
-
+            
             quickViewHeader.text(header);
             quickViewHeader.addClass("text_class");
             quickViewPrice.text("Price: " + price);

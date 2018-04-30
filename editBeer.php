@@ -21,7 +21,7 @@ else{
 
 </head>
 <body>
-<header>
+<header class="fixed-top">
     <?php include_once "php_includes/header.php"; ?>
 </header>
 <div class="container" style="margin-top: 50px; margin-bottom: 50px;">

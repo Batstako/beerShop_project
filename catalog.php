@@ -62,6 +62,7 @@ if (isset($_POST['deposit'])) {
 
     <link href="css/styles.css" rel="stylesheet">
 
+
     <title>Catalog</title>
 </head>
 
@@ -72,7 +73,10 @@ if (isset($_POST['deposit'])) {
 </header>
 
 <div id="main_container" class='container' style="margin: 150px auto; text-align: center;">
-  <div style="position:fixed; margin-left: 50%;"><h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> <img id="wallet" src="images/wallet_card.png" style="width: 10%;" /></div>
+  <div id="balance" style="position:fixed; margin-left: 50%;">
+      <h3 id="money" style="vertical-align: 0.7em; display: inline-block;">Current balance: <?= $user['wallet'] ?> BGN</h3> 
+      <img id="wallet" src="images/wallet_card.png" style="width: 10%;" />
+  </div>
     <form name="sort" action="catalog.php" method="get">
         <select class="btn" name="order">
             <option>Order by:</option>
@@ -129,6 +133,7 @@ if (isset($_POST['deposit'])) {
             extract($row);
             echo "<div class='product justify-content-md-center'>";
             echo "<img class='beerPicture' src='beers/{$picture}' style='height: 130px; width:130px'>";
+           echo "<div class='click-callback'></div>";
             echo "<h2 class='header my-3 text-truncate'>{$name}</h2>";
             echo "<p class='description' style='display: none;'>{$description}</p>";
             echo "<p class='price'>{$price} lv.</p>";
@@ -150,8 +155,10 @@ if (isset($_POST['deposit'])) {
         echo "<div class='close'></div>";
         echo "<h2 class='headline'>{$name}</h2>";
         echo "<img class='picture' src='beers/{$picture}' style='height:30%;'>" ;
+        echo "<div class='click-callback'></div>";
         echo "<p class='price my-3'>{$price}</p>";
         echo "<p class='description my-5 text-justify'>{$description}</p>";
+
 
     echo "</div>";
 
@@ -168,7 +175,10 @@ if (isset($_POST['deposit'])) {
     include_once "php_includes/paging.php";
     echo "</div>";
     ?>
-    <div class="container" id="container_search" style= "display: none; margin: 180px auto 150px; text-align: center;"></div>
+  <div class="container" id="container_search" style= "display: none; margin: 180px auto 150px; text-align: center;">
+        
+
+  </div>
 
     <footer class="fixed-bottom"
             style="font-family: 'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol'">
@@ -181,10 +191,21 @@ if (isset($_POST['deposit'])) {
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js"></script>
+    <script src="js/jquery-stars-master/src/stars.js"></script>
     <script src="js/catalog.js" type="text/javascript"></script>
     <script src="js/search.js" type="text/javascript"></script>
+    
+    
     <script>
         $(document).ready(function () {
+
+            $(".click-callback").stars({
+                
+                
+            });
+            
             $("#catalog").addClass('text_shadow');
             $('#wallet').click(function() {
                 window.location.href = this.id + '.php';
@@ -194,7 +215,8 @@ if (isset($_POST['deposit'])) {
         window.onscroll = function () {
             myFunction()
         };
-
+        
+        
         var header = document.getElementById("myHeader");
         var sticky = header.offsetTop;
 

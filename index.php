@@ -108,6 +108,9 @@
     <script>
         $(document).ready(function() {
             $("#home").addClass('text_shadow');
+//            $("#search_id").on('focus', function(){
+//                window.location.href = 'catalog.php';
+//            })
         });
     </script>
 
