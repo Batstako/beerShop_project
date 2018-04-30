@@ -405,3 +405,13 @@ input #avatar{
 }#container_search{
     margin: 180px auto 150px;
 }
+
+.view_order_table {
+    background-color: #eee;
+    border-color:#eee;
+    border-radius:5px
+}
+
+.table_header {
+    background-color: #fff;
+}

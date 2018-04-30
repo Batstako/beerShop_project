@@ -42,7 +42,7 @@
                         $exec = $pdo->prepare($beerQuery);
                         $exec->execute();
                         $beerRow = $exec->fetch (PDO::FETCH_ASSOC);
-                        echo "<div class='fron beer'>";
+                        echo "<div class='fron_beer'>";
                         echo "<p><img style='height: 100px;' src='beers/{$beerRow['picture']}'></p>";
                         echo "<p>{$beerRow['name']}</p>";
                         echo "<p>Sold: {$beerRow['times_sold']}</p>";
@@ -73,13 +73,11 @@
                         echo "</div>";
                     }
                     ?>
+                </div>
+            </div>
         </div>
-
-    </div>
-    </div>
-    </div>
-
-    
+        <div class="col-lg-1"></div>
+    </div>  
     
     
 
